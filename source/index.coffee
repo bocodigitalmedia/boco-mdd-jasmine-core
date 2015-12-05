@@ -222,7 +222,7 @@ configure = ($ = {}) ->
       contextNodes.reduce @generateDescribe.bind(@), snippets
 
     generateSnippets: (parseTree, snippets = (new Snippets)) ->
-      snippets.addInitializeFilesVariable variableName: @filesVariableName, depth: parseTree.depth + 1
+      snippets.addInitializeFilesVariable variableName: @filesVariableName, depth: 0
       snippets = @generateDescribes snippets, parseTree.getContextNodes()
 
     generate: (parseTree) ->

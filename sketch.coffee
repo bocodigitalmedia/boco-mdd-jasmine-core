@@ -1,5 +1,6 @@
 MarkdownDriven = require 'boco-markdown-driven'
 Core = require './source'
+filename = process.argv[2] ? "example.md"
 
 class CoffeeToken
   type: null
@@ -43,7 +44,7 @@ parser = new MarkdownDriven.Parser
 
 generator = new Core.Generator scriptService: new CoffeeScriptService
 
-markdown = require("fs").readFileSync("example.md").toString()
+markdown = require("fs").readFileSync(filename).toString()
 tokens = lexer.lex markdown
 parseTree = parser.parse tokens
 snippets = generator.generateSnippets parseTree

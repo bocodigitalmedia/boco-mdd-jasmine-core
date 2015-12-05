@@ -224,7 +224,7 @@ configure = function($) {
       var i, indentation, results;
       indentation = (function() {
         results = [];
-        for (var i = 1; 1 <= depth ? i < depth : i > depth; 1 <= depth ? i++ : i--){ results.push(i); }
+        for (var i = 0; 0 <= depth ? i < depth : i > depth; 0 <= depth ? i++ : i--){ results.push(i); }
         return results;
       }).apply(this).map((function(_this) {
         return function() {
@@ -483,7 +483,7 @@ configure = function($) {
       }
       snippets.addInitializeFilesVariable({
         variableName: this.filesVariableName,
-        depth: parseTree.depth + 1
+        depth: 0
       });
       return snippets = this.generateDescribes(snippets, parseTree.getContextNodes());
     };
