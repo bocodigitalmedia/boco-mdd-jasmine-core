@@ -1,0 +1,35 @@
+#!/bin/bash
+DIR="$(cd "$(dirname "$0")" && pwd)"
+coffee="$DIR/../node_modules/.bin/coffee"
+source_dir="$DIR/../source"
+build_dir="$DIR/../build"
+spec_dir="$DIR/../spec"
+bin_dir="$DIR/../bin"
+docs_dir="$DIR/../docs"
+npm_dir="$DIR/.."
+
+clean() {
+  clean-build-dir
+}
+
+clean-build-dir() {
+  rm -f $build_dir/**/*.js $build_dir/**/*.map
+}
+
+build() {
+  build-source
+  build-readme
+}
+
+build-source() {
+  $coffee -cmb -o $build_dir $source_dir
+}
+
+build-readme() {
+  cat $docs_dir/MarkdownDrivenJasmine.coffee.md > $npm_dir/README.md
+  echo -e "\n--------------------------------------------------------------------------------\n" >> $npm_dir/README.md
+  cat $npm_dir/LICENSE.md >> $npm_dir/README.md
+}
+
+argv=("$*")
+for arg in $argv; do eval ${arg}; done

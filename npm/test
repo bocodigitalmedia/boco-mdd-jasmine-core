@@ -1,0 +1,6 @@
+#!/bin/bash
+DIR="$(cd "$(dirname "$0")/.." && pwd)"
+coffee="$DIR/node_modules/.bin/coffee"
+runner="$DIR/support/jasmine-runner.coffee"
+
+NODE_PATH=$NODE_PATH:$DIR $coffee $runner "$@"

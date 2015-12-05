@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2015 Boco Digital Media
+Copyright (c) 2015 Christian Bradley, Boco Digital Media, LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
