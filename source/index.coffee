@@ -76,7 +76,7 @@ configure = ($ = {}) ->
       @joinString ?= $.joinString
 
     indent: (code, depth) ->
-      indentation = [1...depth].map(=> @indentationString).join('')
+      indentation = [0...depth].map(=> @indentationString).join('')
       code.replace /^/gm, indentation
 
     renderSnippet: (renderedSnippets, snippet) ->
