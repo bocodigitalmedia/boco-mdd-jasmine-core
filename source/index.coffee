@@ -16,6 +16,9 @@ configure = ($ = {}) ->
     add: (snippet) ->
       @snippets.push snippet
 
+    addBreak: ->
+      @add type: "Break"
+
     addInitializeFilesVariable: ({variableName}) ->
       @add type: "InitializeFilesVariable", variableName: variableName
 
@@ -77,6 +80,8 @@ configure = ($ = {}) ->
       code.replace /^/gm, indentation
 
     renderSnippet: (renderedSnippets, snippet) ->
+      return renderedSnippets.concat("") if snippet.type is "Break"
+
       renderFnName = "render#{snippet.type}"
       renderFn = @[renderFnName]
       throw Error("#{renderFnName} not defined") unless renderFn?
@@ -138,6 +143,7 @@ configure = ($ = {}) ->
 
       depth = contextNode.depth + 1
 
+      snippets.addBreak()
       snippets.addBeforeEachStart depth: depth
 
       fileNodes.forEach ({path, data, depth}) =>
@@ -146,6 +152,8 @@ configure = ($ = {}) ->
           path: path
           data: data
           depth: depth + 1
+
+      snippets.addBreak() if fileNodes.length
 
       beforeEachNodes.forEach ({code, depth}) ->
         snippets.addBeforeEachCode
@@ -161,6 +169,7 @@ configure = ($ = {}) ->
 
       depth = contextNode.depth + 1
 
+      snippets.addBreak()
       snippets.addAfterEachStart depth: depth
 
       fileNodes.forEach ({path, depth}) =>
@@ -175,6 +184,7 @@ configure = ($ = {}) ->
     generateAssertion: (snippets, assertionNode) ->
       {depth, text, code} = assertionNode
 
+      snippets.addBreak()
       snippets.addAssertionStart
         text: text
         isAsync: @isAsyncAssertion(code)
@@ -193,6 +203,7 @@ configure = ($ = {}) ->
       {depth, text} = contextNode
       variableNames = @getContextVariableNames contextNode
 
+      snippets.addBreak()
       snippets.addDescribeStart text: text, depth: depth
 
       if !!(variableNames.length)
