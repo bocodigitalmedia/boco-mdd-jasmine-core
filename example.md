@@ -5,6 +5,22 @@ Mather is a library for doing maths.
     Mather = require 'mather'
     mather = new Mather()
 
+
+## Prune me
+
+Even if there is some before-each code:
+
+  foo = "bar"
+
+### Prune me too
+
+Because there are no assertions
+
+```md
+<!-- file: "some-file.md" -->
+# Even if I have a file
+```
+
 ## Adding
 
 You can add two numbers:

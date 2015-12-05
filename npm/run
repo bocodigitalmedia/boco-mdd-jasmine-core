@@ -9,11 +9,7 @@ docs_dir="$DIR/../docs"
 npm_dir="$DIR/.."
 
 clean() {
-  clean-build-dir
-}
-
-clean-build-dir() {
-  rm -f $build_dir/**/*.js $build_dir/**/*.map
+  find $build_dir -name *.js -print0 | xargs -0 rm -f
 }
 
 build() {

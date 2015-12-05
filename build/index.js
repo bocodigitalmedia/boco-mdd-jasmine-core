@@ -45,6 +45,12 @@ configure = function($) {
       return this.snippets.push(snippet);
     };
 
+    Snippets.prototype.addBreak = function() {
+      return this.add({
+        type: "Break"
+      });
+    };
+
     Snippets.prototype.addInitializeFilesVariable = function(arg) {
       var variableName;
       variableName = arg.variableName;
@@ -230,6 +236,9 @@ configure = function($) {
 
     SnippetsRenderer.prototype.renderSnippet = function(renderedSnippets, snippet) {
       var renderFn, renderFnName, renderedSnippet, snippetStr;
+      if (snippet.type === "Break") {
+        return renderedSnippets.concat("");
+      }
       renderFnName = "render" + snippet.type;
       renderFn = this[renderFnName];
       if (renderFn == null) {
@@ -348,6 +357,7 @@ configure = function($) {
         return snippets;
       }
       depth = contextNode.depth + 1;
+      snippets.addBreak();
       snippets.addBeforeEachStart({
         depth: depth
       });
@@ -363,6 +373,9 @@ configure = function($) {
           });
         };
       })(this));
+      if (fileNodes.length) {
+        snippets.addBreak();
+      }
       beforeEachNodes.forEach(function(arg) {
         var code, depth;
         code = arg.code, depth = arg.depth;
@@ -384,6 +397,7 @@ configure = function($) {
         return snippets;
       }
       depth = contextNode.depth + 1;
+      snippets.addBreak();
       snippets.addAfterEachStart({
         depth: depth
       });
@@ -407,6 +421,7 @@ configure = function($) {
     Generator.prototype.generateAssertion = function(snippets, assertionNode) {
       var code, depth, text;
       depth = assertionNode.depth, text = assertionNode.text, code = assertionNode.code;
+      snippets.addBreak();
       snippets.addAssertionStart({
         text: text,
         isAsync: this.isAsyncAssertion(code),
@@ -434,6 +449,7 @@ configure = function($) {
       var depth, text, variableNames;
       depth = contextNode.depth, text = contextNode.text;
       variableNames = this.getContextVariableNames(contextNode);
+      snippets.addBreak();
       snippets.addDescribeStart({
         text: text,
         depth: depth
