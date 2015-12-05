@@ -5,6 +5,8 @@ configure = ($ = {}) ->
   $.globalVariables ?= require "./globalVariables"
   $.filesVariableName ?= "$files"
   $.doneFunctionName ?= "ok"
+  $.placeholderAssertionText ?= "is ok"
+  $.placeholderAssertionCode ?= "expect(true).toEqual(true)"
 
   class Snippets
     snippets: null
@@ -115,11 +117,15 @@ configure = ($ = {}) ->
     snippetsRenderer: null
     filesVariableName: null
     doneFunctionName: null
+    placeholderAssertionText: null
+    placeholderAssertionCode: null
 
     constructor: (props = {}) ->
       @[key] = val for own key, val of props
       @filesVariableName ?= $.filesVariableName
       @doneFunctionName ?= $.doneFunctionName
+      @placeholderAssertionText ?= $.placeholderAssertionText
+      @placeholderAssertionCode ?= $.placeholderAssertionCode
 
     getContextVariableNames: (contextNode) ->
       beforeEachNodes = contextNode.getBeforeEachNodes()
@@ -182,7 +188,11 @@ configure = ($ = {}) ->
       snippets
 
     generateAssertion: (snippets, assertionNode) ->
-      {depth, text, code} = assertionNode
+      {depth, text, code, placeholder} = assertionNode
+
+      if placeholder is true
+        text = @placeholderAssertionText
+        code = @placeholderAssertionCode
 
       snippets.addBreak()
       snippets.addAssertionStart
