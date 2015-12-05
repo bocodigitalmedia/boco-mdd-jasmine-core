@@ -6,15 +6,15 @@ Mather is a library for doing maths.
     mather = new Mather()
 
 
-## Prune me
+## Add a placeholder assertion
 
-Even if there is some before-each code:
+Because there is some before-each code:
 
-  foo = "bar"
+    foo = "bar"
 
-### Prune me too
+## Prune me 
 
-Because there are no assertions
+Because there are no assertions and no before-each code
 
 ```md
 <!-- file: "some-file.md" -->

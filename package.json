@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/bocodigitalmedia/boco-mdd-jasmine-core#readme",
   "devDependencies": {
-    "boco-markdown-driven": "^0.3.1",
+    "boco-markdown-driven": "^0.3.6",
     "coffee-script": "^1.10.0"
   }
 }

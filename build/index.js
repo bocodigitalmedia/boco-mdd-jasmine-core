@@ -23,6 +23,12 @@ configure = function($) {
   if ($.doneFunctionName == null) {
     $.doneFunctionName = "ok";
   }
+  if ($.placeholderAssertionText == null) {
+    $.placeholderAssertionText = "is ok";
+  }
+  if ($.placeholderAssertionCode == null) {
+    $.placeholderAssertionCode = "expect(true).toEqual(true)";
+  }
   Snippets = (function() {
     Snippets.prototype.snippets = null;
 
@@ -300,6 +306,10 @@ configure = function($) {
 
     Generator.prototype.doneFunctionName = null;
 
+    Generator.prototype.placeholderAssertionText = null;
+
+    Generator.prototype.placeholderAssertionCode = null;
+
     function Generator(props) {
       var key, val;
       if (props == null) {
@@ -315,6 +325,12 @@ configure = function($) {
       }
       if (this.doneFunctionName == null) {
         this.doneFunctionName = $.doneFunctionName;
+      }
+      if (this.placeholderAssertionText == null) {
+        this.placeholderAssertionText = $.placeholderAssertionText;
+      }
+      if (this.placeholderAssertionCode == null) {
+        this.placeholderAssertionCode = $.placeholderAssertionCode;
       }
     }
 
@@ -419,8 +435,12 @@ configure = function($) {
     };
 
     Generator.prototype.generateAssertion = function(snippets, assertionNode) {
-      var code, depth, text;
-      depth = assertionNode.depth, text = assertionNode.text, code = assertionNode.code;
+      var code, depth, placeholder, text;
+      depth = assertionNode.depth, text = assertionNode.text, code = assertionNode.code, placeholder = assertionNode.placeholder;
+      if (placeholder === true) {
+        text = this.placeholderAssertionText;
+        code = this.placeholderAssertionCode;
+      }
       snippets.addBreak();
       snippets.addAssertionStart({
         text: text,
