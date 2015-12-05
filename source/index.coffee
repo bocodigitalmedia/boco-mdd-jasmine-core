@@ -2,11 +2,9 @@ configure = ($ = {}) ->
 
   $.indentationString ?= "  "
   $.joinString ?= "\n"
-  $.reduceUnique ?= (arr, v) -> arr.push(v) if arr.indexOf(v) is -1; arr
-  $.globalVariables ?= require("./global-variables")
+  $.globalVariables ?= require "./globalVariables"
   $.filesVariableName ?= "$files"
   $.doneFunctionName ?= "ok"
-  $.scriptService ?= null
 
   class Snippets
     snippets: null
@@ -16,13 +14,16 @@ configure = ($ = {}) ->
       @snippets ?= []
 
     add: (snippet) ->
-      @add snippet
+      @snippets.push snippet
+
+    addInitializeFilesVariable: ({variableName}) ->
+      @add type: "InitializeFilesVariable", variableName: variableName
 
     addDescribeStart: ({text, depth}) ->
       @add type: "DescribeStart", text: text, depth: depth
 
-    addInitializeVariables: ({vars, depth}) ->
-      @add type: "InitializeVariables", vars: vars, depth: depth
+    addInitializeVariables: ({variableNames, depth}) ->
+      @add type: "InitializeVariables", variableNames: variableNames, depth: depth
 
     addBeforeEachStart: ({depth}) ->
       @add type: "BeforeEachStart", depth: depth
@@ -60,8 +61,8 @@ configure = ($ = {}) ->
     addBreak: ->
       @add type: "Break", depth: 0
 
-    map: (args...) ->
-      @snippets.map args...
+    toArray: ->
+      @snippets.slice()
 
   class SnippetsRenderer
     indentationString: null
@@ -75,12 +76,21 @@ configure = ($ = {}) ->
       indentation = [1...depth].map(=> @indentationString).join('')
       code.replace /^/gm, indentation
 
-    renderSnippet: (snippet) ->
-      snippetStr = @["render#{snippet.type}"].call this, snippet
-      @indent snippetStr, snippet.depth
+    renderSnippet: (renderedSnippets, snippet) ->
+      renderFnName = "render#{snippet.type}"
+      renderFn = @[renderFnName]
+      throw Error("#{renderFnName} not defined") unless renderFn?
+
+      snippetStr = renderFn.call @, snippet
+      return renderedSnippets unless snippetStr?
+
+      renderedSnippet = @indent snippetStr, snippet.depth
+      renderedSnippets.push renderedSnippet
+      renderedSnippets
 
     render: (snippets) ->
-      snippets.map(@renderSnippet.bind(@)).join(@joinString) + "\n"
+      renderedSnippets = snippets.toArray().reduce @renderSnippet.bind(@), []
+      renderedSnippets.join(@joinString) + "\n"
 
   class ScriptService
     globalVariables: null
@@ -97,13 +107,12 @@ configure = ($ = {}) ->
 
   class Generator
     scriptService: null
+    snippetsRenderer: null
     filesVariableName: null
     doneFunctionName: null
-    snippetsRenderer: null
 
     constructor: (props = {}) ->
       @[key] = val for own key, val of props
-      @scriptService ?= $.scriptService
       @filesVariableName ?= $.filesVariableName
       @doneFunctionName ?= $.doneFunctionName
 
@@ -181,9 +190,6 @@ configure = ($ = {}) ->
       assertionNodes.reduce @generateAssertion.bind(@), snippets
 
     generateDescribe: (snippets, contextNode) ->
-      # ignore empty contexts
-      return snippets unless contextNode.getAssertionNodes().length
-
       {depth, text} = contextNode
       variableNames = @getContextVariableNames contextNode
 
@@ -205,7 +211,7 @@ configure = ($ = {}) ->
       contextNodes.reduce @generateDescribe.bind(@), snippets
 
     generateSnippets: (parseTree, snippets = (new Snippets)) ->
-      snippets.addInitializeFilesVariable filesVariableName: @filesVariableName, depth: parseTree.depth + 1
+      snippets.addInitializeFilesVariable variableName: @filesVariableName, depth: parseTree.depth + 1
       snippets = @generateDescribes snippets, parseTree.getContextNodes()
 
     generate: (parseTree) ->

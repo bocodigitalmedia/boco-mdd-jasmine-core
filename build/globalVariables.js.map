@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "globalVariables.js",
+  "sourceRoot": "..",
+  "sources": [
+    "source/globalVariables.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA,MAAM,CAAC,OAAP,GAAiB,CACf,SADe,EAEf,OAFe,EAGf,OAHe,EAIf,aAJe,EAKf,SALe,EAMf,QANe,EAOf,MAPe,EAQf,OARe,EASf,WATe,EAUf,cAVe,EAWf,cAXe,EAYf,UAZe,EAaf,UAbe,EAcf,YAde,EAef,YAfe,EAgBf,WAhBe,EAiBf,MAjBe,EAkBf,MAlBe,EAmBf,KAnBe,EAoBf,MApBe,EAqBf,KArBe,EAsBf,QAtBe,EAuBf,QAvBe,EAwBf,YAxBe,EAyBf,gBAzBe,EA0Bf,QA1Be,EA2Bf,KA3Be,EA4Bf,QA5Be,EA6Bf,QA7Be,EA8Bf,aA9Be,EA+Bf,WA/Be,EAgCf,UAhCe,EAiCf,aAjCe,EAkCf,aAlCe,EAmCf,YAnCe,EAoCf,mBApCe,EAqCf,SArCe,EAsCf,SAtCe,EAuCf,gBAvCe,EAwCf,eAxCe,EAyCf,cAzCe,EA0Cf,SA1Ce,EA2Cf,WA3Ce,EA4Cf,oBA5Ce,EA6Cf,WA7Ce,EA8Cf,oBA9Ce,EA+Cf,QA/Ce,EAgDf,MAhDe,EAiDf,UAjDe,EAkDf,OAlDe,EAmDf,QAnDe,EAoDf,YApDe,EAqDf,UArDe,EAsDf,SAtDe,EAuDf,SAvDe,EAwDf,cAxDe,EAyDf,aAzDe,EA0Df,YA1De,EA2Df,WA3De,EA4Df,UA5De"
+}
